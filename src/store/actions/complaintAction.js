@@ -4,15 +4,16 @@ import {
   GETALLCOMPLAINT_REQUEST,
   GETALLCOMPLAINT_SUCCESS,
 } from "./actionsTypes";
+
 const getAllComplaint = (dispatch) => {
+  console.log("get all complaintsssss", dispatch);
+
   const token = localStorage.getItem("token");
-  //   console.log("get all complaints", token);
 
   dispatch({ type: GETALLCOMPLAINT_REQUEST });
-
   axios
     .post(
-      "https://api.1logic.in/complainbox/list/UNSOLVED",
+      "https://api.digitaloms.in/api/0023//complainbox/list/UNSOLVED",
       {},
       {
         headers: {
@@ -21,7 +22,7 @@ const getAllComplaint = (dispatch) => {
       }
     )
     .then((res) => {
-      console.log("response==>", res.data);
+      // console.log("response==>", res.data);
       dispatch({ type: GETALLCOMPLAINT_SUCCESS, payload: res.data[0] });
     })
     .catch((error) => {

@@ -5,6 +5,8 @@ import OfficeAdminComplaintBoard from "../officeAdmin/ComplaintBoard";
 import ViewerComplaintBoard from "../viewer/ComplaintBoard";
 import KaryakartaComplaintBoard from "../karyakarta/screens/ComplaintBoard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SuperAdminComplaintForm from "../superAdmin/ComplaintForm";
+import ComplaintForm from "../superAdmin/ComplaintForm";
 
 const Index = () => {
   return (
@@ -28,6 +30,11 @@ const Index = () => {
             path="/viewerComplaintBoard"
             element={<ViewerComplaintBoard />}
           />
+          <Route
+            path="/SuperAdminComplaintForm"
+            element={<SuperAdminComplaintForm />}
+          />
+          <Route path="/editUser/:id" element={<ComplaintForm />} />
         </Routes>
       </BrowserRouter>
     </div>

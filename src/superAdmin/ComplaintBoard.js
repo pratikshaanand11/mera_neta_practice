@@ -9,6 +9,9 @@ import Paper from "@material-ui/core/Paper";
 import { ComplaintDashboard } from "../utill/index";
 import { getAllComplaint } from "../store/actions/complaintAction";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { ButtonGroup, Button } from "@material-ui/core";
+import { deleteUser } from "../store/actions/ComplaintFormAction";
 
 const ComplaintBoard = () => {
   const [info, setInfo] = useState([]);
@@ -16,11 +19,12 @@ const ComplaintBoard = () => {
   let userInfo = localStorage.getItem("userInfo");
   let userName = JSON.parse(userInfo);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // console.log("-----", userName.firstName);
   const { allComplaint, loading, error } = useSelector(
     (state) => state.complaint
   );
-  console.log("reducer complaint details", allComplaint);
+  // console.log("reducer complaint details", allComplaint);
   useEffect(() => {
     getAllComplaint(dispatch);
   }, []);
@@ -39,9 +43,20 @@ const ComplaintBoard = () => {
   //   //   });
   // }, []);
 
+  const navigateHandler = () => {
+    navigate("/SuperAdminComplaintForm");
+  };
+
+  const handleDelete = (id, info) => {
+    if (window.confirm("Are you sure you want to delete it ??")) {
+      dispatch(deleteUser(id, info, dispatch));
+    }
+  };
+
   return (
     <div>
       <h1>Super Admin Complaint Board</h1>
+      <button onClick={navigateHandler}>ADD</button>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -61,6 +76,7 @@ const ComplaintBoard = () => {
             {allComplaint.map((info) => (
               <TableRow key={info.id}>
                 <TableCell>{info.tokenNumber}</TableCell>
+
                 <TableCell align="right">{info.category.name}</TableCell>
                 <TableCell align="right">{info.registeredBy.role}</TableCell>
                 <TableCell align="right">{info.address.locality}</TableCell>
@@ -76,6 +92,16 @@ const ComplaintBoard = () => {
                 <TableCell align="right">{info.ComplaintDate}</TableCell>
                 <TableCell align="right">{info.createdDate}</TableCell>
                 <TableCell align="right">{info.Actions}</TableCell>
+                <TableCell>
+                  <ButtonGroup>
+                    <Button onClick={() => navigate(`/editUser/${info.id}`)}>
+                      Edit
+                    </Button>
+                    <Button onClick={() => handleDelete(info.id, info)}>
+                      Del
+                    </Button>
+                  </ButtonGroup>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

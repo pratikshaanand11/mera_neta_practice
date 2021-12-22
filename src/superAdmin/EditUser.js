@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { addUser } from "../store/actions/ComplaintFormAction";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { editUser, singleUser } from "../store/actions/ComplaintFormAction";
+import { useNavigate, useParams } from "react-router-dom";
 
-const ComplaintForm = () => {
+const EditUser = () => {
   const [state, setState] = useState({
     fname: "",
     lname: "",
-    gender: "",
     address: "",
     contact: "",
     complaintCategory: "",
@@ -20,7 +18,6 @@ const ComplaintForm = () => {
   const {
     fname,
     lname,
-    gender,
     address,
     contact,
     complaintCategory,
@@ -30,30 +27,36 @@ const ComplaintForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  useEffect(() => {
-    editUser(id, dispatch);
-    console.log("dispppppp", dispatch);
-  }, []);
-
   const handleInputChange = (e) => {
     let { name, value } = e.target;
     setState({ ...state, [name]: value });
+    // console.log("NAme and value of edit", state);
   };
+  const allComplaint = useSelector((state) => state.data);
+
+  useEffect(() => {
+    console.log("dispppppp", dispatch);
+    editUser(id, dispatch);
+  }, []);
+
+  useEffect(() => {
+    if (allComplaint) {
+      setState({ ...allComplaint });
+    }
+  }, [allComplaint]);
 
   const handleSubmit = (e, user) => {
     e.preventDefault();
-
-    dispatch(addUser(state, user));
+    // dispatch(editUser(state));
     dispatch(singleUser(user, state));
     console.log("user details", user);
     console.log("edit user state", state);
-    console.log(state, user);
-    navigate("/superAdminComplaintBoard");
+    navigate("/SuperAdminComplaintForm");
   };
 
   return (
     <div>
-      <h1>Super Admin complaint form</h1>
+      <h1>Edit User</h1>
       <form onSubmit={handleSubmit}>
         <h3>1.Complainer Detail</h3>
         <input
@@ -70,28 +73,6 @@ const ComplaintForm = () => {
           onChange={handleInputChange}
           name="lname"
         />
-        <p>Gender:</p>
-        <input
-          type="radio"
-          value={gender}
-          name="gender"
-          onChange={handleInputChange}
-        />
-        Male
-        <input
-          type="radio"
-          name="gender"
-          value={gender}
-          onChange={handleInputChange}
-        />
-        Female
-        <input
-          type="radio"
-          name="gender"
-          value={gender}
-          onChange={handleInputChange}
-        />
-        Other
         <input
           type="text"
           placeholder="Address"
@@ -113,7 +94,6 @@ const ComplaintForm = () => {
             name="description"
             rows="4"
             cols="50"
-            onChange={handleInputChange}
             placeholder="Description"
           />
         </div>
@@ -129,7 +109,7 @@ const ComplaintForm = () => {
         </div>
         <div>
           Complaint Category
-          <select name="complaintCategory" id="" onChange={handleInputChange}>
+          <select name="complaintCategory" id="">
             <option></option>
             <option value={complaintCategory}>
               पाणी व्यवस्थापन पाणी व्यवस्थापन
@@ -142,7 +122,7 @@ const ComplaintForm = () => {
         <br />
         <div>
           Complaint Type
-          <select name="complaintType" id="" onChange={handleInputChange}>
+          <select name="complaintType" id="">
             <option></option>
             <option value={complaintType}>
               पाणी व्यवस्थापन पाणी व्यवस्थापन
@@ -154,7 +134,7 @@ const ComplaintForm = () => {
         </div>
         <br />
         <button type="submit" onChange={handleInputChange}>
-          Submit
+          Edit User
         </button>
         <br />
         <button>Go Back</button>
@@ -163,4 +143,4 @@ const ComplaintForm = () => {
   );
 };
 
-export default ComplaintForm;
+export default EditUser;
