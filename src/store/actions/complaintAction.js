@@ -6,7 +6,7 @@ import {
 } from "./actionsTypes";
 
 const getAllComplaint = (dispatch) => {
-  console.log("get all complaintsssss", dispatch);
+  // console.log("get all complaintsssss", dispatch);
 
   const token = localStorage.getItem("token");
 

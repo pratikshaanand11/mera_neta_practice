@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/actions/ComplaintFormAction";
 import { useNavigate, useParams } from "react-router-dom";
-import { editUser, singleUser } from "../store/actions/ComplaintFormAction";
+import {
+  updateUser,
+  getSingleUser,
+} from "../store/actions/ComplaintFormAction";
 
 const ComplaintForm = () => {
   const [state, setState] = useState({
@@ -15,39 +18,58 @@ const ComplaintForm = () => {
     complaintType: "",
     complaintDate: "",
   });
+  const [name, setFname] = useState(null);
+  const [lname, setlname] = useState(null);
+  const [gender, setGender] = useState("MALE");
+  const [address, setAddress] = useState(null);
+  const [phone, setPhone] = useState("");
 
-  const dispatch = useDispatch();
   const {
     fname,
-    lname,
-    gender,
-    address,
-    contact,
+    // lname,
+    // gender,
+    // address,
+    // contact,
     complaintCategory,
     complaintType,
     complaintDate,
   } = state;
   const navigate = useNavigate();
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.complaint);
 
   useEffect(() => {
-    editUser(id, dispatch);
-    console.log("dispppppp", dispatch);
+    dispatch(getSingleUser(id));
+    console.log("dispppppp", id);
   }, []);
+
+  useEffect(() => {
+    console.log({ user });
+    if (user.id) {
+      // setState({ ...user });
+      setFname(user.complainer.firstName);
+      console.log("name of the user is", user.complainer.firstName);
+      setlname(user.complainer.lastName);
+      setGender(user.complainer.gender);
+      setAddress(user.complainer.address);
+      setPhone(user.complainer.phone);
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     let { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
 
-  const handleSubmit = (e, user) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    dispatch(addUser(state, user));
-    dispatch(singleUser(user, state));
-    console.log("user details", user);
+    if (id) {
+      dispatch(updateUser(state, id));
+    } else {
+      dispatch(addUser(state));
+    }
     console.log("edit user state", state);
-    console.log(state, user);
     navigate("/superAdminComplaintBoard");
   };
 
@@ -59,15 +81,15 @@ const ComplaintForm = () => {
         <input
           type="text"
           placeholder="First Name"
-          value={fname}
+          value={name}
           onChange={handleInputChange}
-          name="fname"
+          name="name"
         />
         <input
           type="text"
           placeholder="Last Name"
           value={lname}
-          onChange={handleInputChange}
+          onChange={(e) => setlname(e.target.value)}
           name="lname"
         />
         <p>Gender:</p>
@@ -75,34 +97,34 @@ const ComplaintForm = () => {
           type="radio"
           value={gender}
           name="gender"
-          onChange={handleInputChange}
+          onChange={(e) => setGender(e.target.value)}
         />
         Male
         <input
           type="radio"
           name="gender"
           value={gender}
-          onChange={handleInputChange}
+          onChange={(e) => setGender(e.target.value)}
         />
         Female
         <input
           type="radio"
           name="gender"
           value={gender}
-          onChange={handleInputChange}
+          onChange={(e) => setGender(e.target.value)}
         />
         Other
         <input
           type="text"
           placeholder="Address"
           value={address}
-          onChange={handleInputChange}
+          onChange={(e) => setAddress(e.target.value)}
           name="address"
         />
         <input
           type="number"
           placeholder="Phone No."
-          value={contact}
+          // value={contact}
           onChange={handleInputChange}
           name="contact"
         />

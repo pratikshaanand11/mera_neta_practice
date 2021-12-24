@@ -4,15 +4,15 @@ import {
   GETALLCOMPLAINT_FAIL,
   DELETE_USER,
   ADD_USER,
-  EDIT_USER,
   SINGLE_USER,
+  UPDATE_USER,
 } from "./actions/actionsTypes";
 
 const initialState = {
   loading: false,
   allComplaint: [],
+  user: {},
   error: [],
-  singleComplaint: [],
 };
 
 export const getAllComplaintReducer = (state = initialState, action) => {
@@ -45,17 +45,13 @@ export const getAllComplaintReducer = (state = initialState, action) => {
         loading: false,
         allComplaint: action.payload,
       };
-    case EDIT_USER:
-      return {
-        ...state,
-        loading: false,
-      };
     case SINGLE_USER:
       return {
         ...state,
+        user: action.payload,
         loading: false,
-        singleComplaint: action.payload,
       };
+    case UPDATE_USER:
     default:
       return state;
   }
