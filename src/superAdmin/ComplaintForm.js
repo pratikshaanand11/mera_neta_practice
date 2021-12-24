@@ -8,68 +8,70 @@ import {
 } from "../store/actions/ComplaintFormAction";
 
 const ComplaintForm = () => {
-  const [state, setState] = useState({
-    fname: "",
-    lname: "",
-    gender: "",
-    address: "",
-    contact: "",
-    complaintCategory: "",
-    complaintType: "",
-    complaintDate: "",
-  });
-  const [name, setFname] = useState(null);
-  const [lname, setlname] = useState(null);
+  // const [state, setState] = useState({
+  //   fname: "",
+  //   lname: "",
+  //   gender: "",
+  //   address: "",
+  //   contact: "",
+  //   complaintCategory: "",
+  //   complaintType: "",
+  //   complaintDate: "",
+  // });
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
   const [gender, setGender] = useState("MALE");
-  const [address, setAddress] = useState(null);
+  // const [address, setAddress] = useState(null);
   const [phone, setPhone] = useState("");
 
-  const {
-    fname,
-    // lname,
-    // gender,
-    // address,
-    // contact,
-    complaintCategory,
-    complaintType,
-    complaintDate,
-  } = state;
+  // const {
+  //   fname,
+  //   lname,
+  //   gender,
+  //   address,
+  //   contact,
+  //   complaintCategory,
+  //   complaintType,
+  //   complaintDate,
+  // } = state;
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.complaint);
 
   useEffect(() => {
-    dispatch(getSingleUser(id));
+    // dispatch(getSingleUser(id));
     console.log("dispppppp", id);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     console.log({ user });
-    if (user.id) {
+    if (user.id && id) {
       // setState({ ...user });
       setFname(user.complainer.firstName);
       console.log("name of the user is", user.complainer.firstName);
-      setlname(user.complainer.lastName);
-      setGender(user.complainer.gender);
-      setAddress(user.complainer.address);
-      setPhone(user.complainer.phone);
+      setLname(user.complainer.lastName);
     }
-  }, [user]);
+  }, [user, id]);
+  useEffect(() => {
+    // console.log({ fname, lname });
+  }, [fname, lname]);
 
-  const handleInputChange = (e) => {
-    let { name, value } = e.target;
-    setState({ ...state, [name]: value });
-  };
+  // const handleInputChange = (e) => {
+  //   let { name, value } = e.target;
+  //   setState({ ...state, [name]: value });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // console.log({ fname, lname });
     if (id) {
-      dispatch(updateUser(state, id));
+      const updatedUser = { fname, lname, id };
+      dispatch(updateUser(updatedUser));
     } else {
-      dispatch(addUser(state));
+      dispatch(addUser({ fname, lname }));
     }
-    console.log("edit user state", state);
+    // console.log("edit user state", state);
     navigate("/superAdminComplaintBoard");
   };
 
@@ -81,44 +83,44 @@ const ComplaintForm = () => {
         <input
           type="text"
           placeholder="First Name"
-          value={name}
-          onChange={handleInputChange}
-          name="name"
+          value={fname}
+          onChange={(e) => setFname(e.target.value)}
+          name="fname"
         />
         <input
           type="text"
           placeholder="Last Name"
           value={lname}
-          onChange={(e) => setlname(e.target.value)}
+          onChange={(e) => setLname(e.target.value)}
           name="lname"
         />
-        <p>Gender:</p>
+        {/* <p>Gender:</p>
         <input
           type="radio"
           value={gender}
           name="gender"
-          onChange={(e) => setGender(e.target.value)}
+          onChange={handleInputChange}
         />
         Male
         <input
           type="radio"
           name="gender"
           value={gender}
-          onChange={(e) => setGender(e.target.value)}
+          onChange={handleInputChange}
         />
         Female
         <input
           type="radio"
           name="gender"
           value={gender}
-          onChange={(e) => setGender(e.target.value)}
+          onChange={handleInputChange}
         />
         Other
         <input
           type="text"
           placeholder="Address"
           value={address}
-          onChange={(e) => setAddress(e.target.value)}
+          onChange={handleInputChange}
           name="address"
         />
         <input
@@ -173,11 +175,9 @@ const ComplaintForm = () => {
               पब्लिक ट्रान्सपोर्ट पब्लिक ट्रान्सपोर्ट
             </option>
           </select>
-        </div>
+        </div> */}
         <br />
-        <button type="submit" onChange={handleInputChange}>
-          Submit
-        </button>
+        <button type="submit">Submit</button>
         <br />
         <button>Go Back</button>
       </form>

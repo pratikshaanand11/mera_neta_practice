@@ -11,7 +11,10 @@ import { getAllComplaint } from "../store/actions/complaintAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ButtonGroup, Button } from "@material-ui/core";
-import { deleteUser } from "../store/actions/ComplaintFormAction";
+import {
+  deleteUser,
+  getSingleUser,
+} from "../store/actions/ComplaintFormAction";
 
 const ComplaintBoard = () => {
   const [info, setInfo] = useState([]);
@@ -53,6 +56,11 @@ const ComplaintBoard = () => {
     }
   };
 
+  const navigateEditHandler = (info) => {
+    navigate(`/editUser/${info.id}`);
+    dispatch(getSingleUser(info.id));
+  };
+
   return (
     <div>
       <h1>Super Admin Complaint Board</h1>
@@ -73,7 +81,7 @@ const ComplaintBoard = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allComplaint.map((info) => (
+            {allComplaint?.map((info) => (
               <TableRow key={info.id}>
                 <TableCell>{info.tokenNumber}</TableCell>
 
@@ -94,7 +102,7 @@ const ComplaintBoard = () => {
                 <TableCell align="right">{info.Actions}</TableCell>
                 <TableCell>
                   <ButtonGroup>
-                    <Button onClick={() => navigate(`/editUser/${info.id}`)}>
+                    <Button onClick={() => navigateEditHandler(info)}>
                       Edit
                     </Button>
                     <Button onClick={() => handleDelete(info.id, info)}>

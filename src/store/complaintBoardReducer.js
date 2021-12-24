@@ -46,12 +46,15 @@ export const getAllComplaintReducer = (state = initialState, action) => {
         allComplaint: action.payload,
       };
     case SINGLE_USER:
+      // console.log("action of edit user", action.payload);
       return {
         ...state,
         user: action.payload,
         loading: false,
       };
     case UPDATE_USER:
+      // console.log(state.allComplaint);
+      return state;
     default:
       return state;
   }
