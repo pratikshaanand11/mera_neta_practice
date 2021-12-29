@@ -13,7 +13,7 @@ const getAllComplaint = (dispatch) => {
   dispatch({ type: GETALLCOMPLAINT_REQUEST });
   axios
     .post(
-      "https://api.digitaloms.in/api/0023//complainbox/list/UNSOLVED",
+      "https://api.1logic.in/complainbox/list/UNSOLVED",
       {},
       {
         headers: {

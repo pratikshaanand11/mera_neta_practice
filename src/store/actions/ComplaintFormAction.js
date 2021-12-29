@@ -48,22 +48,80 @@ export const addUser = (user) => {
   return function (dispatch) {
     const token = localStorage.getItem("token");
     // console.log("get add user token", token);
+    // const body = {
+    //   address: { cityType: null },
+    //   description: user.description,
+    //   complainer: {
+    //     addressFields: {},
+    //     extraFields: {},
+    //     firstName: user.fname,
+    //     lastName: user.lname,
+    //     gender: "MALE",
+    //     phone: user.phone,
+    //     rationCard: null,
+    //     cast: null,
+    //     subcast: null,
+    //   },
+    //   isDirectEntry: true,
+    //   commentCreatedBy: 1,
+    //   actualComplainDate: user.complaintDate,
+    //   isAddedByKiosk: false,
+    //   category: {
+    //     id: 2,
+    //     name: user.complaintCategory,
+    //     prefix: "PT",
+    //     createdDate: user.createdDate,
+    //     updatedDate: "2019-12-03T07:07:12.376Z",
+    //     createdBy: 0,
+    //     updatedBy: 0,
+    //     types: [
+    //       {
+    //         id: 4,
+    //         name: user.complaintType,
+    //         createdDate: "2019-12-03T07:07:12.406Z",
+    //         updatedDate: "2019-12-03T07:07:12.406Z",
+    //         createdBy: 0,
+    //         updatedBy: 0,
+    //       },
+    //       {
+    //         id: 5,
+    //         name: user.complaintType,
+    //         createdDate: "2019-12-03T07:07:12.406Z",
+    //         updatedDate: "2019-12-03T07:07:12.406Z",
+    //         createdBy: 0,
+    //         updatedBy: 0,
+    //       },
+    //     ],
+    //   },
+    //   type: {
+    //     id: 4,
+    //     name: user.complaintType,
+    //     createdDate: user.createdDate,
+    //     updatedDate: "2019-12-03T07:07:12.406Z",
+    //     createdBy: 0,
+    //     updatedBy: 0,
+    //   },
+    //   office: 1,
+    //   karyaKarta: [{ id: 12 }],
+
+    //   adhikari: [],
+    // };\
     const body = {
       address: { cityType: null },
       complainer: {
         addressFields: {},
         extraFields: {},
-        firstName: user.fname,
-        lastName: user.lname,
-        gender: "MALE",
-        phone: user.contact,
+        firstName: "kajalllllll",
+        lastName: "patil",
+        gender: "FEMALE",
+        phone: "4356789900",
         rationCard: null,
         cast: null,
         subcast: null,
       },
       isDirectEntry: true,
       commentCreatedBy: 1,
-      actualComplainDate: "2021-11-30T18:30:00.000Z",
+      actualComplainDate: "2021-12-06T18:30:00.000Z",
       isAddedByKiosk: false,
       category: {
         id: 2,
@@ -93,19 +151,20 @@ export const addUser = (user) => {
         ],
       },
       type: {
-        id: 4,
-        name: "नवीन बस साठी निवेदन",
+        id: 5,
+        name: "गावात बसची नवीन फेरी",
         createdDate: "2019-12-03T07:07:12.406Z",
         updatedDate: "2019-12-03T07:07:12.406Z",
         createdBy: 0,
         updatedBy: 0,
       },
       office: 1,
-      karyaKarta: [],
+      karyaKarta: [{ id: 12 }, { id: 9 }],
       adhikari: [],
     };
+    console.log("karyakarta name", body);
     axios
-      .post("https://api.digitaloms.in/api/0023//complainbox", body, {
+      .post("https://api.1logic.in/complainbox", body, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -121,7 +180,7 @@ export const addUser = (user) => {
 
 export const getSingleUser = (id) => {
   return function (dispatch) {
-    console.log("edit dispatch");
+    console.log("edit dispatch", id);
     const token = localStorage.getItem("token");
     console.log("edit dispatch", token);
     axios
@@ -140,129 +199,142 @@ export const getSingleUser = (id) => {
   };
 };
 
-export const updateUser = (user, id) => {
+export const updateUser = (user, updatedUser) => {
   return function (dispatch) {
     const token = localStorage.getItem("token");
-    console.log("single user data fetched", user);
-    const body = {
-      actualComplainDate: "2021-11-30T18:30:00.000Z",
-      address: {
-        assembly: null,
-        cityType: null,
-        createdBy: null,
-        createdDate: "2021-12-23T11:24:17.254Z",
-        gan_number: null,
-        gaon: null,
-        gat_number: null,
-        id: 36,
-        line1: null,
-        locality: null,
-        pincode: null,
-        prabhag: null,
-        prabhagArea: null,
-        updatedBy: null,
-        updatedDate: "2021-12-23T11:24:17.254Z",
-        adhikari: [],
-        category: {
-          createdBy: 0,
-          createdDate: "2019-12-03T07:07:12.376Z",
-          id: 2,
-          name: "पब्लिक ट्रान्सपोर्ट",
-          prefix: "PT",
-        },
-        types: [
-          {
-            createdBy: 0,
-            createdDate: "2019-12-03T07:07:12.406Z",
-            id: 4,
-            name: "नवीन बस साठी निवेदन",
-            updatedBy: 0,
-            updatedDate: "2019-12-03T07:07:12.406Z",
-          },
-          {
-            createdBy: 0,
-            createdDate: "2019-12-03T07:07:12.406Z",
-            id: 5,
-            name: "गावात बसची नवीन फेरी",
-            updatedBy: 0,
-            updatedDate: "2019-12-03T07:07:12.406Z",
-            updatedBy: 0,
-            updatedDate: "2019-12-03T07:07:12.376Z",
-          },
-        ],
-        complainer: {
-          ProfileImage: null,
-          aadhar: null,
-          acNumber: null,
-          address: null,
-          addressFields: {},
-          address_v1: null,
-          age: null,
-          alternatePhone: null,
-          assembly: null,
-          boothName: null,
-          boothNumber: null,
-          cast: null,
-          city: null,
-          cityType: null,
-          createdBy: null,
-          createdDate: "2021-12-23T11:24:17.269Z",
-          dob: null,
-          drivingLicence: null,
-          education: null,
-          email: null,
-          extraFields: {},
-          firstName: user.fname,
-          gan_number: null,
-          gaon: null,
-          gat_number: null,
-          gender: "MALE",
-          id: 260,
-          isVoter: false,
-          lastName: user.lname,
-          lastName_v1: null,
-          localFirstName: null,
-          localLastName: null,
-          localMiddleName: null,
-          middleName: null,
-          occupation: null,
-          pancard: null,
-          partNumber: null,
-          phone: "1234567890",
-          pincode: null,
-          prabhag: null,
-          prabhagArea: null,
-          rationCard: null,
-          rlnType: null,
-          role: "VISITOR",
-          sectionNumber: null,
-          slnNumberInPart: null,
-          subcast: null,
-          totalVisits: 0,
-          uniqueId: "ABC000260",
-          updatedBy: null,
-          updatedDate: "2021-12-23T11:24:17.000Z",
-          vipEntry: false,
-          voterID: null,
-          ward: null,
-          description: null,
-          documents: null,
-          id: 36,
-          isAddedByKiosk: false,
-          karyaKarta: [],
-          office: 1,
-          status: "UNSOLVED",
-        },
-        type: {
-          createdBy: 0,
-          createdDate: "2019-12-03T07:07:12.406Z",
-          id: 4,
-          name: "नवीन बस साठी निवेदन",
-          updatedBy: 0,
-          updatedDate: "2019-12-03T07:07:12.406Z",
-        },
-      },
-    };
+    console.log("prv", user);
+    console.log("next", updatedUser);
+    user.complainer.firstName = updatedUser.fname;
+    user.complainer.lastName = updatedUser.lname;
+    user.complainer.middleName = updatedUser.mname;
+    user.complainer.phone = updatedUser.phone;
+    user.category.name = updatedUser.complaintCategory;
+    user.type.name = updatedUser.complaintType;
+    user.description = updatedUser.description;
+    user.karyaKarta.firstName = updatedUser.assignedKaryakarta;
+
+    const body = user;
+    console.log("=====>>>>", body);
+    // const body = {
+    //   id: parseInt(user.id),
+    //   description: null,
+    //   address: {
+    //     id: 57,
+    //     locality: null,
+    //     pincode: null,
+    //     line1: null,
+    //     cityType: null,
+    //     createdDate: "2021-12-27T10:09:35.765Z",
+    //     updatedDate: "2021-12-27T10:09:35.765Z",
+    //     createdBy: null,
+    //     updatedBy: null,
+    //     assembly: null,
+    //     gat_number: null,
+    //     gan_number: null,
+    //     gaon: null,
+    //     prabhag: null,
+    //     prabhagArea: null,
+    //   },
+    //   complainer: {
+    //     id: 282,
+    //     uniqueId: "ABC000282",
+    //     firstName: user.fname,
+    //     middleName: user.mname,
+    //     lastName: user.lname,
+    //     phone: user.phone,
+    //     alternatePhone: null,
+    //     email: null,
+    //     dob: null,
+    //     pancard: null,
+    //     aadhar: null,
+    //     voterID: null,
+    //     drivingLicence: null,
+    //     address: null,
+    //     city: null,
+    //     cityType: null,
+    //     role: "VISITOR",
+    //     pincode: null,
+    //     gender: "MALE",
+    //     rationCard: null,
+    //     vipEntry: false,
+    //     education: null,
+    //     age: null,
+    //     occupation: null,
+    //     boothNumber: null,
+    //     boothName: null,
+    //     ward: null,
+    //     localFirstName: null,
+    //     localMiddleName: null,
+    //     localLastName: null,
+    //     addressFields: {},
+    //     extraFields: {},
+    //     totalVisits: 0,
+    //     isVoter: false,
+    //     acNumber: null,
+    //     partNumber: null,
+    //     sectionNumber: null,
+    //     slnNumberInPart: null,
+    //     address_v1: null,
+    //     lastName_v1: null,
+    //     rlnType: null,
+    //     ProfileImage: null,
+    //     createdDate: "2021-12-27T10:09:35.782Z",
+    //     updatedDate: "2021-12-27T10:09:35.000Z",
+    //     createdBy: null,
+    //     updatedBy: null,
+    //     assembly: null,
+    //     cast: null,
+    //     subcast: null,
+    //     gat_number: null,
+    //     gan_number: null,
+    //     gaon: null,
+    //     prabhag: null,
+    //     prabhagArea: null,
+    //   },
+    //   karyaKarta: [],
+    //   category: {
+    //     id: 2,
+    //     name: user.complaintCategory,
+    //     prefix: "PT",
+    //     createdDate: user.createdDate,
+    //     updatedDate: "2019-12-03T07:07:12.376Z",
+    //     createdBy: 0,
+    //     updatedBy: 0,
+    //     types: [
+    //       {
+    //         id: 4,
+    //         name: user.complaintType,
+    //         createdDate: "2019-12-03T07:07:12.406Z",
+    //         updatedDate: "2019-12-03T07:07:12.406Z",
+    //         createdBy: 0,
+    //         updatedBy: 0,
+    //       },
+    //       {
+    //         id: 5,
+    //         name: user.complaintType,
+    //         createdDate: "2019-12-03T07:07:12.406Z",
+    //         updatedDate: "2019-12-03T07:07:12.406Z",
+    //         createdBy: 0,
+    //         updatedBy: 0,
+    //       },
+    //     ],
+    //   },
+    //   type: {
+    //     id: 4,
+    //     name: user.complaintType,
+    //     createdDate: user.createdDate,
+    //     updatedDate: "2019-12-03T07:07:12.406Z",
+    //     createdBy: 0,
+    //     updatedBy: 0,
+    //   },
+    //   status: "UNSOLVED",
+    //   adhikari: [],
+    //   documents: null,
+    //   actualComplainDate: "2021-12-27T10:12:47.509Z",
+    //   isAddedByKiosk: false,
+    //   office: 1,
+    // };
+    console.log("==>>", body);
     axios
       .post("https://api.1logic.in/complainbox", body, {
         headers: {
@@ -272,6 +344,7 @@ export const updateUser = (user, id) => {
       .then((res) => {
         console.log("response for edit single user", res);
         dispatch(userUpdated());
+        dispatch(getAllComplaint());
       })
       .catch((err) => console.log("error to edit the single user", err));
   };

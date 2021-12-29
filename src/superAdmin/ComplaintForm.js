@@ -6,72 +6,157 @@ import {
   updateUser,
   getSingleUser,
 } from "../store/actions/ComplaintFormAction";
+import { DataGrid } from "@material-ui/data-grid";
+
+const columns = [
+  { field: "id", headerName: "ID", width: 90 },
+  {
+    field: "firstName",
+    headerName: "First name",
+    width: 150,
+    editable: true,
+  },
+  {
+    field: "lastName",
+    headerName: "Last name",
+    width: 150,
+    editable: true,
+  },
+  {
+    // field: "age",
+    // headerName: "Age",
+    // type: "number",
+    // width: 110,
+    // editable: true,
+  },
+  {
+    // field: "fullName",
+    // headerName: "Full name",
+    // description: "This column has a value getter and is not sortable.",
+    // sortable: false,
+    // width: 160,
+    // valueGetter: (params) =>
+    //   `${params.getValue(params.id, "firstName") || ""} ${
+    //     params.getValue(params.id, "lastName") || ""
+    //   }`,
+  },
+];
+
+const rows = [
+  { id: 1, lastName: "karyakarta", firstName: "sampark", age: 35 },
+  { id: 2, lastName: "Test", firstName: "Anuja", age: 42 },
+  { id: 3, lastName: "karyakarta", firstName: "demo", age: 45 },
+];
 
 const ComplaintForm = () => {
-  // const [state, setState] = useState({
-  //   fname: "",
-  //   lname: "",
-  //   gender: "",
-  //   address: "",
-  //   contact: "",
-  //   complaintCategory: "",
-  //   complaintType: "",
-  //   complaintDate: "",
-  // });
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [mname, setMname] = useState("");
+  const [phone, setPhone] = useState(null);
+  const [complaintCategory, setComplaintCategory] = useState("");
+  const [complaintType, setComplaintType] = useState("");
+  const [complaintDate, setComplaintDate] = useState(null);
+  const [createdDate, setCreatedDate] = useState(null);
+  const [description, setDescription] = useState("");
+  const [comments, setComments] = useState("");
+  const [assignedKaryakarta, setAssignedKaryakarta] = useState("");
+  const [adhikari, setAdhikari] = useState("");
   const [gender, setGender] = useState("MALE");
-  // const [address, setAddress] = useState(null);
-  const [phone, setPhone] = useState("");
 
-  // const {
-  //   fname,
-  //   lname,
-  //   gender,
-  //   address,
-  //   contact,
-  //   complaintCategory,
-  //   complaintType,
-  //   complaintDate,
-  // } = state;
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.complaint);
 
-  useEffect(() => {
-    // dispatch(getSingleUser(id));
-    console.log("dispppppp", id);
-  }, [id]);
+  // useEffect(() => {
+  // dispatch(getSingleUser(id));
+  // console.log("dispppppp", id);
+  // }, [id]);
 
   useEffect(() => {
-    console.log({ user });
+    // console.log({ user });
     if (user.id && id) {
-      // setState({ ...user });
       setFname(user.complainer.firstName);
-      console.log("name of the user is", user.complainer.firstName);
+      // console.log("name of the user is", user.complainer.firstName);
+      setMname(user.complainer.middleName);
       setLname(user.complainer.lastName);
+      setPhone(user.complainer.phone);
+      setComplaintCategory(user.category.name);
+      setComplaintType(user.type.name);
+      setDescription(user.description);
+      // setComments();
+      setAssignedKaryakarta(user.karyaKarta[0].firstName);
+      setAdhikari(user.adhikari[0].firstName);
     }
   }, [user, id]);
   useEffect(() => {
-    // console.log({ fname, lname });
-  }, [fname, lname]);
-
-  // const handleInputChange = (e) => {
-  //   let { name, value } = e.target;
-  //   setState({ ...state, [name]: value });
-  // };
+    console.log({
+      // fname,
+      // mname,
+      // lname,
+      // phone,
+      // complaintCategory,
+      // complaintType,
+      // complaintDate,
+      // createdDate,
+      // description,
+      // comments,
+      assignedKaryakarta,
+      adhikari,
+    });
+  }, [
+    fname,
+    mname,
+    lname,
+    phone,
+    complaintCategory,
+    complaintType,
+    complaintDate,
+    createdDate,
+    description,
+    comments,
+    assignedKaryakarta,
+    adhikari,
+  ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log({ fname, lname });
+    console.log("id::::::", id, user);
     if (id) {
-      const updatedUser = { fname, lname, id };
-      dispatch(updateUser(updatedUser));
+      const updatedUser = {
+        fname,
+        mname,
+        lname,
+        id,
+        phone,
+        complaintCategory,
+        complaintType,
+        complaintDate,
+        createdDate,
+        description,
+        comments,
+        assignedKaryakarta,
+        adhikari,
+      };
+      dispatch(updateUser(user, updatedUser));
     } else {
-      dispatch(addUser({ fname, lname }));
+      dispatch(
+        addUser({
+          fname,
+          mname,
+          lname,
+          phone,
+          complaintCategory,
+          complaintType,
+          complaintDate,
+          createdDate,
+          description,
+          comments,
+          assignedKaryakarta,
+          adhikari,
+        })
+      );
     }
-    // console.log("edit user state", state);
     navigate("/superAdminComplaintBoard");
   };
 
@@ -79,6 +164,17 @@ const ComplaintForm = () => {
     <div>
       <h1>Super Admin complaint form</h1>
       <form onSubmit={handleSubmit}>
+        <button>Search Voter</button>
+        {/* <div style={{ height: 400, width: "100%" }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            checkboxSelection
+            disableSelectionOnClick
+            value={assignedKaryakarta}
+            onChange={(e) => setAssignedKaryakarta(e.target.value)}
+          />
+        </div> */}
         <h3>1.Complainer Detail</h3>
         <input
           type="text"
@@ -89,94 +185,105 @@ const ComplaintForm = () => {
         />
         <input
           type="text"
+          placeholder="Middle Name"
+          value={mname}
+          onChange={(e) => setMname(e.target.value)}
+          name="lname"
+        />
+        <input
+          type="text"
           placeholder="Last Name"
           value={lname}
           onChange={(e) => setLname(e.target.value)}
           name="lname"
         />
-        {/* <p>Gender:</p>
-        <input
-          type="radio"
-          value={gender}
-          name="gender"
-          onChange={handleInputChange}
-        />
-        Male
-        <input
-          type="radio"
-          name="gender"
-          value={gender}
-          onChange={handleInputChange}
-        />
-        Female
-        <input
-          type="radio"
-          name="gender"
-          value={gender}
-          onChange={handleInputChange}
-        />
-        Other
-        <input
-          type="text"
-          placeholder="Address"
-          value={address}
-          onChange={handleInputChange}
-          name="address"
-        />
         <input
           type="number"
           placeholder="Phone No."
-          // value={contact}
-          onChange={handleInputChange}
-          name="contact"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          name="phone"
         />
         <h3>2.Complaint Details</h3>
-        <div>
-          <textarea
-            id=""
-            name="description"
-            rows="4"
-            cols="50"
-            onChange={handleInputChange}
-            placeholder="Description"
-          />
-        </div>
-        <div>
-          Actual Complaint Date
-          <input
-            type="date"
-            id=""
-            name="complaintDate"
-            value={complaintDate}
-            onChange={handleInputChange}
-          ></input>
-        </div>
+        <textarea
+          name="description"
+          rows="5"
+          cols="50"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <br />
+        <textarea
+          name="comments"
+          rows="2"
+          cols="50"
+          placeholder="Comments"
+          value={comments}
+          onChange={(e) => setComments(e.target.value)}
+        />
+        <br />
         <div>
           Complaint Category
-          <select name="complaintCategory" id="" onChange={handleInputChange}>
-            <option></option>
-            <option value={complaintCategory}>
-              पाणी व्यवस्थापन पाणी व्यवस्थापन
+          <select
+            value={complaintCategory}
+            onChange={(e) => setComplaintCategory(e.target.value)}
+          >
+            <option value="पाणी व्यवस्थापन " name="complaintCategory">
+              पाणी व्यवस्थापन
             </option>
-            <option value={complaintCategory}>
-              पब्लिक ट्रान्सपोर्ट पब्लिक ट्रान्सपोर्ट
+            <option value="पब्लिक ट्रान्सपोर्ट" name="complaintCategory">
+              पब्लिक ट्रान्सपोर्ट
             </option>
           </select>
         </div>
         <br />
         <div>
           Complaint Type
-          <select name="complaintType" id="" onChange={handleInputChange}>
-            <option></option>
-            <option value={complaintType}>
-              पाणी व्यवस्थापन पाणी व्यवस्थापन
+          <select onChange={(e) => setComplaintType(e.target.value)}>
+            <option name="complaintType" value="पाईपलाईन टाकणे">
+              पाईपलाईन टाकणे
             </option>
-            <option value={complaintType}>
-              पब्लिक ट्रान्सपोर्ट पब्लिक ट्रान्सपोर्ट
+            <option name="complaintType" value="पाईपलाईन दुरुस्ती">
+              पाईपलाईन दुरुस्ती
             </option>
           </select>
-        </div> */}
+        </div>
         <br />
+        <div>
+          Actual Complaint Date
+          <input
+            type="date"
+            name="complaintDate"
+            value={complaintDate}
+            onChange={(e) => setComplaintDate(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          Created Date
+          <input
+            type="date"
+            name="createdDate"
+            value={createdDate}
+            onChange={(e) => setCreatedDate(e.target.value)}
+          />
+        </div>
+        <h3>Assigned Karyakarta</h3>
+        <input
+          type="text"
+          placeholder="Karyakarta Name"
+          value={assignedKaryakarta}
+          onChange={(e) => setAssignedKaryakarta(e.target.value)}
+          name="assignedKaryakarta"
+        />
+        <h3>Assigned Adhikari</h3>
+        <input
+          type="text"
+          placeholder="Assigned Adhikari"
+          value={adhikari}
+          onChange={(e) => setAdhikari}
+          name="adhikari'"
+        />
         <button type="submit">Submit</button>
         <br />
         <button>Go Back</button>
