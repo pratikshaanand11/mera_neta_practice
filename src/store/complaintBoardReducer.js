@@ -6,6 +6,7 @@ import {
   ADD_USER,
   SINGLE_USER,
   UPDATE_USER,
+  SEARCH_USER,
 } from "./actions/actionsTypes";
 
 const initialState = {
@@ -55,6 +56,14 @@ export const getAllComplaintReducer = (state = initialState, action) => {
     case UPDATE_USER:
       // console.log(state.allComplaint);
       return state;
+
+    case SEARCH_USER:
+      console.log("action of search user", action.payload);
+      return {
+        ...state,
+        user: action.payload,
+        loading: false,
+      };
     default:
       return state;
   }

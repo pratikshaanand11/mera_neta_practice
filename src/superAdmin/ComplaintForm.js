@@ -1,12 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../store/actions/ComplaintFormAction";
+import { addUser, searchUser } from "../store/actions/ComplaintFormAction";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   updateUser,
   getSingleUser,
 } from "../store/actions/ComplaintFormAction";
 import { DataGrid } from "@material-ui/data-grid";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
+import { makeStyles } from "@material-ui/core/styles";
+import { TextField, IconButton } from "@material-ui/core";
+import TableBody from "@material-ui/core/TableBody";
+import Table from "@material-ui/core/Table";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import { SearchOutlined } from "@material-ui/icons";
+
+const useStyles = makeStyles((theme) => ({
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: "1px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    height: "20rem",
+    width: "30rem",
+  },
+}));
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -86,7 +113,7 @@ const ComplaintForm = () => {
       setDescription(user.description);
       // setComments();
       setAssignedKaryakarta(user.karyaKarta[0].firstName);
-      setAdhikari(user.adhikari[0].firstName);
+      // setAdhikari(user.adhikari[0].firstName);
     }
   }, [user, id]);
   useEffect(() => {
@@ -101,8 +128,8 @@ const ComplaintForm = () => {
       // createdDate,
       // description,
       // comments,
-      assignedKaryakarta,
-      adhikari,
+      // assignedKaryakarta,
+      // adhikari,
     });
   }, [
     fname,
@@ -121,8 +148,13 @@ const ComplaintForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("id::::::", id, user);
+    if (fname || lname || phone === "") {
+      alert("Please fill the feild");
+      return;
+    }
+
     if (id) {
+      // console.log("id::::::", id, user);
       const updatedUser = {
         fname,
         mname,
@@ -160,11 +192,84 @@ const ComplaintForm = () => {
     navigate("/superAdminComplaintBoard");
   };
 
+  const searchHandler = () => {
+    dispatch(searchUser());
+  };
+
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div>
       <h1>Super Admin complaint form</h1>
       <form onSubmit={handleSubmit}>
-        <button>Search Voter</button>
+        <div>
+          <button type="button" onClick={handleOpen}>
+            Search Voter
+          </button>
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={classes.modal}
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>
+              <div className={classes.paper}>
+                <h2 id="transition-modal-title">Voter Search</h2>
+                <p id="transition-modal-description">
+                  <TextField
+                    fullWidth
+                    id="standard-bare"
+                    variant="outlined"
+                    placeholder="Firstname"
+                    InputProps={{
+                      endAdornment: (
+                        <IconButton>
+                          <SearchOutlined onClick={() => searchHandler()} />
+                        </IconButton>
+                      ),
+                    }}
+                  />
+                  <Table aria-label="collapsible table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right">FirstName</TableCell>
+                        <TableCell>LastName</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableRow>
+                      {user[0]?.map((info) => {
+                        // console.log("00000", info);
+                        return (
+                          <div>
+                            <TableCell align="right">
+                              {info?.firstName}
+                            </TableCell>
+                            <TableCell>{info?.lastName}</TableCell>
+                          </div>
+                        );
+                      })}
+                    </TableRow>
+                  </Table>
+                </p>
+              </div>
+            </Fade>
+          </Modal>
+        </div>
         {/* <div style={{ height: 400, width: "100%" }}>
           <DataGrid
             rows={rows}
